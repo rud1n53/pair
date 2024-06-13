@@ -270,6 +270,11 @@
                 return;
                 //음운 개수가 다름
             }
+            if(!(w1List.length == w2List.length)){
+                checkResult = 3;
+                return;
+                //음운 개수가 다름
+            }
             for(i=0; i<w1List.length; i++){
                 if(!(w1List[i] == w2List[i])){
                     check++;
