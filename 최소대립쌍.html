@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+        <meta charset="utf-8">
+        <title>최소대립쌍</title>
+        <style>
+            *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+            }
+            form input{
+            width: 228px;
+            height: 44px;
+            background-color: #eaeaea;
+            border: none;
+            border-radius: 5px / 5px;
+            margin-bottom: 14px;
+            padding: 20px;
+            }
+            form {
+            z-index: 10;
+            width: 304px;
+            height: 262px;
+            font-size: 14px;
+            color: #504444;
+            background-color: white;
+            border: 1px solid black;
+            padding: 28px 38px;
+            text-align: center;
+            border-radius: 5px / 5px;
+            }
+            form fieldset{
+            border: none;
+            }
+            form fieldset legend{
+            position: absolute;
+            top: -999999px;
+            }
+            p1{
+            font-size: 16px;
+            font-weight: bold;
+            margin: 28px auto;
+            }
+            form button{
+            width: 228px;
+            height: 44px;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 5px / 5px;
+            cursor: pointer;
+            }
+            #submit {
+            background-color: #373f3c;
+            color: #ffffff;
+            border: none;
+            margin-bottom: 28px;
+            }
+            #screen {
+            position: absolute;
+            display: flex;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            align-items: center;
+            justify-content: center;
+            }
+            #confirm{
+            height: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="screen">
+            <form id="form" autocomplete="off">
+                <fieldset>
+                    <legend>단어 입력</legend>
+                        <p1>비교할 단어를 입력해주세요!</p1>
+                        <label for="word1">
+                            <input type="text" id="word1" name="word1" placeholder="단어1" style="margin-top: 14px;">
+                        </label>
+                        <label for="word2">
+                            <input type="text" id="word2" name="word2" placeholder="단어2">
+                        </label>
+                        <button type="submit" id="submit">
+                            확인
+                        </button>
+                </fieldset>
+            </form>
+            <div id="confirm" style="margin-left: 50px;">
+                <img id="image" src="./default.png" style="width: 229px; margin-bottom: 10px;">
+                <p1 id="comment" style="margin: 0 auto;">우잉</p1>
+            </div>
+        </div>
+    </body>
+    <script>
+        const Chosung = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
+        const Jungsung = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
+        const Jongsung = " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ"
+        const comment = document.getElementById("comment");
+        const image = document.getElementById("image");
+
+        let JungLen = Jungsung.length;
+        let JongLen = Jongsung.length;
+        let ChoLen = Chosung.length;
+        let diff, checkResult=0 , ocheck1=0 , ocheck2=0 , Jongcheck=0 , Jungcheck=0 , check=0;
+        let JongNum, JungNum, ChoNum;
+        let w1List = [] , w2List = [];
+        let w1 = "오리";
+        let w2 = "가봥";
+
+        function shatterer1(word){
+            diff = `${word}`.charCodeAt(0).toString(10) - '가'.charCodeAt(0).toString(10);
+            JongNum = diff % JongLen;
+            JungNum = (Math.floor(diff / JongLen)) % JungLen;
+            ChoNum = Math.floor((Math.floor(diff / JongLen)) / JungLen);
+            //초중종성으로 찢는 알고리즘. 시계 원리 차용
+
+            if(ChoNum == 11){ocheck1++;}
+            w1List.push(Chosung[ChoNum]);
+            if(JungNum == 2){
+                w1List.push('ㅣ'); w1List.push('ㅏ');
+            } else if(JungNum == 3){
+                w1List.push('ㅣ'); w1List.push('ㅐ');
+            } else if(JungNum == 6){
+                w1List.push('ㅣ'); w1List.push('ㅓ');
+            } else if(JungNum == 7){
+                w1List.push('ㅣ'); w1List.push('ㅔ');
+            } else if(JungNum == 9){
+                w1List.push('ㅗ'); w1List.push('ㅏ');
+            } else if(JungNum == 10){
+                w1List.push('ㅗ'); w1List.push('ㅐ');
+            } else if(JungNum == 12){
+                w1List.push('ㅣ'); w1List.push('ㅗ');
+            } else if(JungNum == 14){
+                w1List.push('ㅜ'); w1List.push('ㅓ');
+            } else if(JungNum == 15){
+                w1List.push('ㅜ'); w1List.push('ㅔ');
+            } else if(JungNum == 19){
+                w1List.push('ㅡ'); w1List.push('ㅣ');
+            } else{
+                w1List.push(Jungsung[JungNum]);
+            }//이중모음 찢어줘야했다.. 노가다 어쩔 수 없었다... 인생....
+            if(JongNum == 0){return;
+            } else if(JongNum == 3){
+                w1List.push('ㄱ'); w1List.push('ㅅ');
+            } else if(JongNum == 5){
+                w1List.push('ㄴ'); w1List.push('ㅈ');
+            } else if(JongNum == 6){
+                w1List.push('ㄴ'); w1List.push('ㅎ');
+            } else if(JongNum == 9){
+                w1List.push('ㄹ'); w1List.push('ㄱ');
+            } else if(JongNum == 10){
+                w1List.push('ㄹ'); w1List.push('ㅁ');
+            } else if(JongNum == 11){
+                w1List.push('ㄹ'); w1List.push('ㅂ');
+            } else if(JongNum == 12){
+                w1List.push('ㄹ'); w1List.push('ㅅ');
+            } else if(JongNum == 13){
+                w1List.push('ㄹ'); w1List.push('ㅌ');
+            } else if(JongNum == 14){
+                w1List.push('ㄹ'); w1List.push('ㅍ');
+            } else if(JongNum == 15){
+                w1List.push('ㄹ'); w1List.push('ㅎ');
+            } else if(JongNum == 18){
+                w1List.push('ㅂ'); w1List.push('ㅅ');
+            } else{
+                w1List.push(Jongsung[JongNum]);
+            }//자음군도 찢어줘야했다... 나도 마음 아프다...
+        }
+
+        function shatterer2(word){
+            diff = `${word}`.charCodeAt(0).toString(10) - '가'.charCodeAt(0).toString(10);
+            JongNum = diff % JongLen;
+            JungNum = (Math.floor(diff / JongLen)) % JungLen;
+            ChoNum = Math.floor((Math.floor(diff / JongLen)) / JungLen);
+
+            if(ChoNum == 11){ocheck2++;}
+            w2List.push(Chosung[ChoNum]);
+            if(JungNum == 2){
+                w2List.push('ㅣ'); w2List.push('ㅏ');
+            } else if(JungNum == 3){
+                w2List.push('ㅣ'); w2List.push('ㅐ');
+            } else if(JungNum == 6){
+                w2List.push('ㅣ'); w2List.push('ㅓ');
+            } else if(JungNum == 7){
+                w2List.push('ㅣ'); w2List.push('ㅔ');
+            } else if(JungNum == 9){
+                w2List.push('ㅗ'); w2List.push('ㅏ');
+            } else if(JungNum == 10){
+                w2List.push('ㅗ'); w2List.push('ㅐ');
+            } else if(JungNum == 12){
+                w2List.push('ㅣ'); w2List.push('ㅗ');
+            } else if(JungNum == 14){
+                w2List.push('ㅜ'); w2List.push('ㅓ');
+            } else if(JungNum == 15){
+                w2List.push('ㅜ'); w2List.push('ㅔ');
+            } else if(JungNum == 19){
+                w2List.push('ㅡ'); w2List.push('ㅣ');
+            } else{
+                w2List.push(Jungsung[JungNum]);
+            }//이중모음 찢어줘야했다.. 노가다 어쩔 수 없었다... 인생....
+            if(JongNum == 0){return;
+            } else if(JongNum == 3){
+                w2List.push('ㄱ'); w2List.push('ㅅ');
+            } else if(JongNum == 5){
+                w2List.push('ㄴ'); w2List.push('ㅈ');
+            } else if(JongNum == 6){
+                w2List.push('ㄴ'); w2List.push('ㅎ');
+            } else if(JongNum == 9){
+                w2List.push('ㄹ'); w2List.push('ㄱ');
+            } else if(JongNum == 10){
+                w2List.push('ㄹ'); w2List.push('ㅁ');
+            } else if(JongNum == 11){
+                w2List.push('ㄹ'); w2List.push('ㅂ');
+            } else if(JongNum == 12){
+                w2List.push('ㄹ'); w2List.push('ㅅ');
+            } else if(JongNum == 13){
+                w2List.push('ㄹ'); w2List.push('ㅌ');
+            } else if(JongNum == 14){
+                w2List.push('ㄹ'); w2List.push('ㅍ');
+            } else if(JongNum == 15){
+                w2List.push('ㄹ'); w2List.push('ㅎ');
+            } else if(JongNum == 18){
+                w2List.push('ㅂ'); w2List.push('ㅅ');
+            } else{
+                w2List.push(Jongsung[JongNum]);
+            }//자음군도 찢어줘야했다... 나도 마음 아프다...
+        }
+
+        function separater(word1,word2){
+            for (i=0; i<word1.length; i++) {
+                shatterer1(word1[i]);
+                shatterer2(word2[i]);
+            }
+        }//단어는 여러글자니까 글자 하나마다 이걸 반복해줘야함
+
+        function checker(word1,word2){
+            for(i=0; i<word1.length; i++){
+                if(!(44032<=`${word1[i]}`.charCodeAt(0).toString(10) && 55203>=`${word1[i]}`.charCodeAt(0).toString(10))){
+                    checkResult = 0;
+                    return;
+                    //한글 유니코드 이외의 범위의 문자가 있음
+                }
+            }
+            for(i=0; i<word2.length; i++){
+                if(!(44032<=`${word2[i]}`.charCodeAt(0).toString(10) && 55203>=`${word2[i]}`.charCodeAt(0).toString(10))){
+                    checkResult = 0;
+                    return;
+                    //한글 유니코드 이외의 범위의 문자가 있음
+                }
+            }
+            if(!(word1.length == word2.length)){
+                checkResult = 2;
+                return;
+                //글자 길이가 다름
+            }
+            separater(word1,word2);
+            console.log(w1List); console.log(w2List);
+            if(!(w1List.length-ocheck1 == w2List.length-ocheck2)){
+                checkResult = 3;
+                return;
+                //음운 개수가 다름
+            }
+            for(i=0; i<w1List.length; i++){
+                if(!(w1List[i] == w2List[i])){
+                    check++;
+                }
+            }
+            if(check == 1){
+                checkResult = 1;
+                //최소대립쌍임
+            } else {
+                checkResult = 4;
+                //최소대립쌍이 아님
+            }
+        }
+
+        function reset(){
+            diff=0, checkResult=0 , ocheck1=0 , ocheck2=0 , Jongcheck=0 , Jungcheck=0 , check=0;
+            w1List = [] , w2List = [];
+        }
+
+        document.getElementById("form").onsubmit = function(){
+            w1 = this.word1.value;
+            w2 = this.word2.value;
+            checker(w1,w2);
+            if(checkResult == 0){
+                comment.innerText="한글 단어가 아닌 문자가 있어요.";
+                image.src="./q.png";
+            } else if(checkResult == 1){
+                comment.innerText="최소대립쌍입니다!";
+                image.src="./o.png"
+            } else if(checkResult == 2){
+                comment.innerText="단어 길이가 달라용.";
+                image.src="./x.png"
+            } else if(checkResult == 3){
+                comment.innerText="음운의 개수가 달라용.";
+                image.src="./x.png"
+            } else if(checkResult == 4){
+                comment.innerText="최소대립쌍이 아니에요.";
+                image.src="./x.png"
+            } else {
+                comment.innerText="이거뜨면오류난거임";
+            }
+            reset();
+            return false;
+        }
+    </script>
+</html>
