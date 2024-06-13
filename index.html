@@ -271,9 +271,9 @@
                 //음운 개수가 다름
             }
             if(!(w1List.length == w2List.length)){
-                checkResult = 3;
+                checkResult = 4;
                 return;
-                //음운 개수가 다름
+                //여기서 걸러지면 바보 / 밥오 같은 느낌
             }
             for(i=0; i<w1List.length; i++){
                 if(!(w1List[i] == w2List[i])){
