@@ -70,7 +70,7 @@
             justify-content: center;
             }
             #confirm{
-            height: inherit;
+            height: 262px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -96,8 +96,9 @@
                 </fieldset>
             </form>
             <div id="confirm" style="margin-left: 50px;">
-                <img id="image" src="./default.png" style="width: 229px; margin-bottom: 10px;">
+                <img id="image" src="./default.png" style="width: 180px; margin: 0 auto;">
                 <p1 id="comment" style="margin: 0 auto;">우잉</p1>
+                <p1 style="font-weight: 400; font-size: 12px; color:#373f3c; text-align:center;">*두 글자 이상일 경우,<br> 결과가 상이할 수 있습니다.</p1>
             </div>
         </div>
     </body>
@@ -105,6 +106,7 @@
         const Chosung = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
         const Jungsung = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
         const Jongsung = " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ"
+        const Jongsung2 = " ㄱㄱㄱㄴㄴㄴㄷㄹㄱㅁㅂㄷㄷㅂㄹㅁㅂㅂㄷㄷㅇㄷㄷㄱㄷㅂㄷ"
         const comment = document.getElementById("comment");
         const image = document.getElementById("image");
 
@@ -150,31 +152,9 @@
                 w1List.push(Jungsung[JungNum]);
             }//이중모음 찢어줘야했다.. 노가다 어쩔 수 없었다... 인생....
             if(JongNum == 0){return;
-            } else if(JongNum == 3){
-                w1List.push('ㄱ'); w1List.push('ㅅ');
-            } else if(JongNum == 5){
-                w1List.push('ㄴ'); w1List.push('ㅈ');
-            } else if(JongNum == 6){
-                w1List.push('ㄴ'); w1List.push('ㅎ');
-            } else if(JongNum == 9){
-                w1List.push('ㄹ'); w1List.push('ㄱ');
-            } else if(JongNum == 10){
-                w1List.push('ㄹ'); w1List.push('ㅁ');
-            } else if(JongNum == 11){
-                w1List.push('ㄹ'); w1List.push('ㅂ');
-            } else if(JongNum == 12){
-                w1List.push('ㄹ'); w1List.push('ㅅ');
-            } else if(JongNum == 13){
-                w1List.push('ㄹ'); w1List.push('ㅌ');
-            } else if(JongNum == 14){
-                w1List.push('ㄹ'); w1List.push('ㅍ');
-            } else if(JongNum == 15){
-                w1List.push('ㄹ'); w1List.push('ㅎ');
-            } else if(JongNum == 18){
-                w1List.push('ㅂ'); w1List.push('ㅅ');
-            } else{
-                w1List.push(Jongsung[JongNum]);
-            }//자음군도 찢어줘야했다... 나도 마음 아프다...
+            }else{
+                w1List.push(Jongsung2[JongNum]);
+            }//발음대로 치환해서 넣어주기
         }
 
         function shatterer2(word){
@@ -209,31 +189,9 @@
                 w2List.push(Jungsung[JungNum]);
             }//이중모음 찢어줘야했다.. 노가다 어쩔 수 없었다... 인생....
             if(JongNum == 0){return;
-            } else if(JongNum == 3){
-                w2List.push('ㄱ'); w2List.push('ㅅ');
-            } else if(JongNum == 5){
-                w2List.push('ㄴ'); w2List.push('ㅈ');
-            } else if(JongNum == 6){
-                w2List.push('ㄴ'); w2List.push('ㅎ');
-            } else if(JongNum == 9){
-                w2List.push('ㄹ'); w2List.push('ㄱ');
-            } else if(JongNum == 10){
-                w2List.push('ㄹ'); w2List.push('ㅁ');
-            } else if(JongNum == 11){
-                w2List.push('ㄹ'); w2List.push('ㅂ');
-            } else if(JongNum == 12){
-                w2List.push('ㄹ'); w2List.push('ㅅ');
-            } else if(JongNum == 13){
-                w2List.push('ㄹ'); w2List.push('ㅌ');
-            } else if(JongNum == 14){
-                w2List.push('ㄹ'); w2List.push('ㅍ');
-            } else if(JongNum == 15){
-                w2List.push('ㄹ'); w2List.push('ㅎ');
-            } else if(JongNum == 18){
-                w2List.push('ㅂ'); w2List.push('ㅅ');
-            } else{
-                w2List.push(Jongsung[JongNum]);
-            }//자음군도 찢어줘야했다... 나도 마음 아프다...
+            }else{
+                w2List.push(Jongsung2[JongNum]);
+            }//발음대로 치환해서 넣어주기
         }
 
         function separater(word1,word2){
@@ -305,10 +263,10 @@
                 comment.innerText="최소대립쌍입니다!";
                 image.src="./o.png"
             } else if(checkResult == 2){
-                comment.innerText="단어 길이가 달라용.";
+                comment.innerText="단어 길이가 달라요.";
                 image.src="./x.png"
             } else if(checkResult == 3){
-                comment.innerText="음운의 개수가 달라용.";
+                comment.innerText="음운의 개수가 달라요.";
                 image.src="./x.png"
             } else if(checkResult == 4){
                 comment.innerText="최소대립쌍이 아니에요.";
